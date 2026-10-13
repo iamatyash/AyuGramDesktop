@@ -1,156 +1,124 @@
-# AyuGram
+<div align="center">
 
-![AyuGram Logo](.github/AyuGram.png) ![AyuChan](.github/AyuChan.png)
+# AyuGram Desktop + Windows Installer
 
-[ English  |   [Русский](README-RU.md) ]
+<p align="center">
+  <img src=".github/AyuGram.png" alt="AyuGram Logo" width="128" />
+</p>
 
-## Features
+[![Auto-Sync & Build Installer](https://github.com/iamatyash/AyuGramDesktop/actions/workflows/sync-and-build-installer.yml/badge.svg)](https://github.com/iamatyash/AyuGramDesktop/actions/workflows/sync-and-build-installer.yml)
+[![Latest Release](https://img.shields.io/github/v/release/iamatyash/AyuGramDesktop?color=007ec6&label=Installer%20Release)](https://github.com/iamatyash/AyuGramDesktop/releases/latest)
+[![Upstream](https://img.shields.io/badge/Upstream-AyuGram%2FAyuGramDesktop-brightgreen)](https://github.com/AyuGram/AyuGramDesktop)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-- Full ghost mode (flexible)
-- Messages history
-- Anti-recall
-- Font customization
-- Streamer mode
-- Local Telegram Premium
-- Translator
-- Media preview & quick reaction on force click (macOS)
-- Enhanced appearance
+<p align="center">
+  <strong><a href="#-русский">🇷🇺 Русский</a></strong> • 
+  <strong><a href="#-english">🇬🇧 English</a></strong>
+</p>
 
-And many more. Check out our [Documentation](https://docs.ayugram.one/desktop/).
+---
 
-<h3>
-  <details>
-    <summary>Preview</summary>
-    <table>
-      <tr>
-        <td><img src='.github/demos/demo1.png' width='268' alt='Preferences'></td>
-        <td><img src='.github/demos/demo2.png' width='268' alt='AyuGram Options'></td>
-        <td><img src='.github/demos/demo3.png' width='268' alt='Message Filters'></td>
-      </tr>
-      <tr>
-        <td><img src='.github/demos/demo4.png' width='268' alt='Appearance'></td>
-        <td><img src='.github/demos/demo5.png' width='268' alt='Chats'></td>
-      </tr>
-    </table>
-  </details>
-</h3>
+</div>
 
-## Downloads
+## 🇷🇺 Русский
 
-### Windows
+Автоматизированный форк официального клиента **[AyuGram Desktop](https://github.com/AyuGram/AyuGramDesktop)** с ежедневной синхронизацией апстрима и сборкой полноценного Windows-установщика (`AyuGram-Setup.exe`).
 
-#### Official
+### 📥 Скачать
 
-You can download prebuilt Windows binary from [Releases tab](https://github.com/AyuGram/AyuGramDesktop/releases) or from
-the [Telegram channel](https://t.me/AyuGramReleases).
+| Версия | Ссылка на загрузку | Описание |
+| :--- | :--- | :--- |
+| **Windows Installer** | [**Скачать AyuGram-Setup.exe**](https://github.com/iamatyash/AyuGramDesktop/releases/latest) | Полноценный инсталлятор (ярлыки в Пуске и на Рабочем столе, ассоциация ссылок `tg://`, интеграция в «Параметры» Windows) |
+| **Portable (.zip)** | [**Скачать AyuGram.zip**](https://github.com/iamatyash/AyuGramDesktop/releases/latest) | Оригинальная портативная версия без установки |
 
-#### Winget
+---
 
-```bash
-winget install RadolynLabs.AyuGramDesktop
-```
+### ✨ Чем этот форк отличается от оригинала?
 
-#### Scoop
+Оригинальный репозиторий AyuGram для Windows выпускает только портативные `.zip`-архивы. Данный форк решает эту проблему:
 
-```bash
-scoop bucket add extras
-scoop install ayugram
-```
+1. **Официальный установщик для Windows (Inno Setup):**
+   * Устанавливает AyuGram в `C:\Program Files\AyuGram`.
+   * Создаёт ярлыки в меню «Пуск» и на Рабочем столе.
+   * Регистрирует протокол ссылок `tg://` (ссылки из браузера открываются напрямую в клиенте).
+   * Регистрирует приложение в «Установленные приложения» Windows с иконкой и корректным деинсталлятором.
+   * Добавляет быстрый запуск через `Win + R` командой `ayugram`.
 
-#### Self-built
+2. **Автоматическая синхронизация (GitHub Actions):**
+   * Каждый день в `06:00 UTC` GitHub Actions автоматически проверяет новые релизы в [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop).
+   * При выходе нового апдейта сборщик автоматически упаковывает свежие файлы в инсталлятор и публикует новый релиз.
 
-Follow [official guide](https://github.com/AyuGram/AyuGramDesktop/blob/dev/docs/building-win-x64.md) if you want to
-build by yourself.
+3. **Локальный фоновый автоапдейтер:**
+   * В комплект входит скрипт `check-update.ps1` и интеграция с Планировщиком задач Windows, автоматически обновляющий клиент без потери ваших аккаунтов и настроек.
 
-### macOS
+---
 
-#### Official
+### 🔥 Возможности AyuGram
 
-You can download prebuilt macOS package from [Releases tab](https://github.com/AyuGram/AyuGramDesktop/releases).
+* **Призрак (Ghost mode):** гибко настраиваемый режим невидимки (не читать сообщения, не отправлять статус набора текста и онлайна).
+* **История сообщений:** сохранение удалённых сообщений собеседников и истории их изменений (Anti-recall).
+* **Локальный Telegram Premium:** доступ к кастомным эмодзи, увеличенным лимитам скорости и иконкам приложения.
+* **Кастомизация интерфейса:** настройка шрифтов, стилей чатов, стримерский режим (скрытие личных данных).
+* **Встроенный переводчик сообщений**.
 
-#### Homebrew
+Подробная документация по настройкам: [docs.ayugram.one](https://docs.ayugram.one/desktop/).
 
-```bash
-brew install --cask ayugram
-```
+---
 
-### Arch Linux
+### 🔗 Ссылки
+* Оригинальный проект: [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop)
+* Новостной Telegram-канал оригинального проекта: [@AyuGramReleases](https://t.me/AyuGramReleases)
 
-#### From source (recommended)
+<br />
 
-Install `ayugram-desktop` from [AUR](https://aur.archlinux.org/packages/ayugram-desktop).
+---
 
-#### Prebuilt binaries
+## 🇬🇧 English
 
-Install `ayugram-desktop-bin` from [AUR](https://aur.archlinux.org/packages/ayugram-desktop-bin).
+An automated tracking fork of the official **[AyuGram Desktop](https://github.com/AyuGram/AyuGramDesktop)** that automatically builds and releases a complete Windows Installer (`AyuGram-Setup.exe`) on every upstream release.
 
-Note: these binaries aren't officially maintained by us.
+### 📥 Downloads
 
-### NixOS
+| Format | Download Link | Description |
+| :--- | :--- | :--- |
+| **Windows Installer** | [**Download AyuGram-Setup.exe**](https://github.com/iamatyash/AyuGramDesktop/releases/latest) | Complete Windows Setup with Start Menu/Desktop shortcuts, `tg://` URL protocol registration, and Windows Settings uninstaller |
+| **Portable (.zip)** | [**Download AyuGram.zip**](https://github.com/iamatyash/AyuGramDesktop/releases/latest) | Standard portable archive |
 
-#### Flake (recommended)
+---
 
-Install `ayugram-desktop` from [ndfined-crp/ayugram-desktop](https://github.com/ndfined-crp/ayugram-desktop)
+### ✨ What makes this fork special?
 
-#### Nixpkgs
+The official AyuGram repository distributes Windows builds solely as portable `.zip` archives. This repository enhances that experience:
 
-Install `ayugram-desktop` from [nixpkgs](https://search.nixos.org/packages?channel=unstable&show=ayugram-desktop)
+1. **Proper Windows Installer (powered by Inno Setup):**
+   * Installs to `C:\Program Files\AyuGram`.
+   * Adds Start Menu & Desktop shortcuts.
+   * Registers the `tg://` URL scheme to handle Telegram links from browsers.
+   * Registers in Windows "Installed apps" / Control Panel with icon and clean uninstallation.
+   * Supports `Win + R` -> `ayugram`.
 
-### ALT Linux
+2. **Automated Upstream Sync (GitHub Actions):**
+   * A daily scheduled workflow checks [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop) for new tags and releases.
+   * When an upstream update is detected, it automatically compiles `AyuGram-Setup.exe` and publishes a GitHub Release.
 
-[Sisyphus](https://packages.altlinux.org/en/sisyphus/srpms/ayugram-desktop/)
+3. **Background Auto-Updater:**
+   * Includes an updater script (`check-update.ps1`) and Windows Task Scheduler configuration to keep the local installation updated automatically without touching user session data.
 
-### Gentoo Linux
+---
 
-See [this repository](https://codeberg.org/OverLessArtem/ayugram-ebuild-gentoo) for installation manual.
+### 🔥 AyuGram Core Features
 
-### Void Linux
-See [this repository](https://codeberg.org/OverLessArtem/ayugram-template-void) for installation manual.
+* **Flexible Ghost Mode:** Read messages without sending read receipts, hide typing indicator, and manage online presence.
+* **Anti-Recall / Message History:** Keep deleted messages and view edit history.
+* **Local Telegram Premium:** Custom emoji, app icons, and higher speed limits.
+* **Appearance Customization:** Custom fonts, streamer mode, improved chat layouts.
+* **Built-in Translator**.
 
-### EPM
+Official documentation: [docs.ayugram.one](https://docs.ayugram.one/desktop/).
 
-`epm play ayugram`
+---
 
-### Fedora
-
-From [RPM Fusion](https://admin.rpmfusion.org/pkgdb/package/free/ayugram-desktop/) repository.
-
-```bash
-dnf install ayugram-desktop
-```
-
-### Any other Linux distro
-
-Flatpak: https://github.com/0FL01/AyuGramDesktop-flatpak
-
-Or follow the [official guide](https://github.com/AyuGram/AyuGramDesktop/blob/dev/docs/building-linux.md).
-
-## Donation
-
-Enjoy using **AyuGram**? Consider sending us a tip!
-
-[Here's available methods.](https://docs.ayugram.one/donate/)
-
-## Credits
-
-### Telegram clients
-
-- [Telegram Desktop](https://github.com/telegramdesktop/tdesktop)
-- [Kotatogram](https://github.com/kotatogram/kotatogram-desktop)
-- [64Gram](https://github.com/TDesktop-x64/tdesktop)
-- [Forkgram](https://github.com/forkgram/tdesktop)
-
-### Libraries used
-
-- [JSON for Modern C++](https://github.com/nlohmann/json)
-- [SQLite](https://github.com/sqlite/sqlite)
-- [sqlite_orm](https://github.com/fnc12/sqlite_orm)
-- [androidx sources](https://github.com/androidx/androidx)
-
-### Icons
-
-- [Solar Icon Set](https://www.figma.com/community/file/1166831539721848736)
-
-### Bots
-
-- [TelegramDB](https://t.me/tgdatabase) for username lookup by ID (until closing free inline mode at 2 April 2026)
+### 🔗 Upstream & Credits
+* Upstream Repository: [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop)
+* Official Telegram Channel: [@AyuGramReleases](https://t.me/AyuGramReleases)
+* Developer: [Radolyn Labs](https://github.com/AyuGram)
