@@ -1,15 +1,9 @@
-name: Auto-Sync Upstream & Build Installer
+name: Build AyuGram Installer
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Every day at 06:00 UTC
+    - cron: "0 6 * * *"
   workflow_dispatch:
-    inputs:
-      force_release:
-        description: 'Force build and release even if version already exists'
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: write
@@ -25,7 +19,7 @@ jobs:
         shell: pwsh
         run: |
           choco install innosetup --no-progress
-          "C:\Program Files (x86)\Inno Setup 6" >> $env:GITHUB_PATH
+          "C:\Program Files (x86)\Inno Setup 6" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Check Upstream Release and Compare
         id: check_release
@@ -40,20 +34,12 @@ jobs:
           $cleanVer = $upstreamTag -replace '^v',''
           Write-Output "upstream_tag=$upstreamTag" >> $env:GITHUB_OUTPUT
           Write-Output "clean_version=$cleanVer" >> $env:GITHUB_OUTPUT
-          Write-Output "upstream_body=$($upstream.body)" >> $env:GITHUB_OUTPUT
-
-          $force = "${{ inputs.force_release }}"
-          if ($force -eq "true") {
-            Write-Host "Forced build requested."
-            Write-Output "should_build=true" >> $env:GITHUB_OUTPUT
-            exit 0
-          }
 
           # Check if our fork already has this release
           $myRelease = gh release view $upstreamTag 2>&1
           if ($LASTEXITCODE -eq 0) {
-            Write-Host "Release $upstreamTag already exists on this fork. Skipping."
-            Write-Output "should_build=false" >> $env:GITHUB_OUTPUT
+            Write-Host "Release $upstreamTag already exists on this fork."
+            Write-Output "should_build=true" >> $env:GITHUB_OUTPUT
           } else {
             Write-Host "Release $upstreamTag not found on this fork. Starting build!"
             Write-Output "should_build=true" >> $env:GITHUB_OUTPUT
@@ -66,7 +52,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $tag = "${{ steps.check_release.outputs.upstream_tag }}"
-          Write-Host "Downloading AyuGram.zip from AyuGram/AyuGramDesktop for tag $tag..."
+          Write-Host "Downloading AyuGram.zip for tag $tag..."
           gh release download $tag --repo AyuGram/AyuGramDesktop --pattern "AyuGram.zip" --output "AyuGram.zip"
           
           New-Item -ItemType Directory -Path "build_input" -Force | Out-Null
@@ -89,16 +75,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $tag = "${{ steps.check_release.outputs.upstream_tag }}"
-          $title = "AyuGram Desktop $tag (with Windows Installer)"
-          $notes = @"
-Automated build tracking official upstream [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop).
-
-### Assets Included:
-- **AyuGram-Setup.exe** — Standard Windows Installer with automatic Start Menu/Desktop shortcuts and ``tg://`` registration.
-- **AyuGram.zip** — Original portable release.
-
-Upstream release: https://github.com/AyuGram/AyuGramDesktop/releases/tag/$tag
-"@
+          $title = "AyuGram Desktop $tag (Windows Installer)"
+          $notes = "Automated build of AyuGram Desktop $tag with official Windows Installer packaging."
 
           gh release create $tag "installer/output/AyuGram-Setup.exe" "AyuGram.zip" `
             --title $title `
