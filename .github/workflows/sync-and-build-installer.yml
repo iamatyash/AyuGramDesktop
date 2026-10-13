@@ -21,8 +21,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Inno Setup
-        uses: heaths/actions-setup-innosetup@v2
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup --no-progress
+          "C:\Program Files (x86)\Inno Setup 6" >> $env:GITHUB_PATH
 
       - name: Check Upstream Release and Compare
         id: check_release
@@ -76,7 +79,7 @@ jobs:
         run: |
           $ver = "${{ steps.check_release.outputs.clean_version }}"
           Write-Host "Building AyuGram-Setup.exe for version $ver..."
-          iscc "/DMyAppVersion=$ver" installer/ayugram.iss
+          & "C:\Program Files (x86)\Inno Setup 6\iscc.exe" "/DMyAppVersion=$ver" installer/ayugram.iss
           Get-Item "installer/output/AyuGram-Setup.exe"
 
       - name: Publish GitHub Release
@@ -88,14 +91,14 @@ jobs:
           $tag = "${{ steps.check_release.outputs.upstream_tag }}"
           $title = "AyuGram Desktop $tag (with Windows Installer)"
           $notes = @"
-          Automated build tracking official upstream [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop).
-          
-          ### Assets Included:
-          - **AyuGram-Setup.exe** — Standard Windows Installer with automatic Start Menu/Desktop shortcuts and `tg://` registration.
-          - **AyuGram.zip** — Original portable release.
-          
-          Upstream release: https://github.com/AyuGram/AyuGramDesktop/releases/tag/$tag
-          "@
+Automated build tracking official upstream [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop).
+
+### Assets Included:
+- **AyuGram-Setup.exe** — Standard Windows Installer with automatic Start Menu/Desktop shortcuts and ``tg://`` registration.
+- **AyuGram.zip** — Original portable release.
+
+Upstream release: https://github.com/AyuGram/AyuGramDesktop/releases/tag/$tag
+"@
 
           gh release create $tag "installer/output/AyuGram-Setup.exe" "AyuGram.zip" `
             --title $title `
